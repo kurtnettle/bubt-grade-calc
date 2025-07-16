@@ -14,11 +14,9 @@ This simple extension allows you to see instant GPA updates as you tweak course 
 
 ## 🎥 Extension in Action:
 
-<img src="./assets/docs/A.png">
-
-### After changing grade of **CSE 111**
-
-<img src="./assets/docs/B.png">
+<p align="center">
+<img src="./assets/docs/preview.webp">
+</p>
 
 ## 🧠 Calculation Logic
 
