@@ -1,0 +1,6 @@
+dist
+.certs
+coverage
+.temp
+node_modules
+web-ext-artifacts

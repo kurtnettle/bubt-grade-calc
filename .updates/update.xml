@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<gupdate xmlns='http://www.google.com/update2/response' protocol='2.0'>
+  <app appid='gnofnaeffcpbhhjncoelfbmmdhhnkgfa'>
+    <updatecheck codebase='https://github.com/kurtnettle/bubt-grade-calc/releases/download/1.0/bubt-grade-calc-v1.0.signed.crx' version='1.0' />
+  </app>
+</gupdate>
