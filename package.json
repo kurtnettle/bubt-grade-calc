@@ -1,6 +1,6 @@
 {
   "name": "bubt-grade-calc",
-  "version": "1.0",
+  "version": "2.0",
   "description": "Calculate your academic grade at ease. (attempt of filling the void which Annex failed)",
   "type": "module",
   "main": "index.js",

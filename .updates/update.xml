@@ -3,4 +3,7 @@
   <app appid='gnofnaeffcpbhhjncoelfbmmdhhnkgfa'>
     <updatecheck codebase='https://github.com/kurtnettle/bubt-grade-calc/releases/download/1.0/bubt-grade-calc-v1.0.signed.crx' version='1.0' />
   </app>
+  <app appid='gnofnaeffcpbhhjncoelfbmmdhhnkgfa'>
+    <updatecheck codebase='https://github.com/kurtnettle/bubt-grade-calc/releases/download/2.0/bubt-grade-calc-v2.0.signed.crx' version='2.0' />
+  </app>  
 </gupdate>
