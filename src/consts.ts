@@ -1,4 +1,11 @@
 export const LOG_TAG = "bubt-grade-calc";
+
+export const SEMESTER_WISE_PAGE_HEADER_SELECTOR = "div#message > div > h2";
+export const SEMESTER_WISE_TABLE_SELECTOR = "input#tabseven + label + div.tab > table";
+
+export const ALL_PREV_PAGE_HEADER_SELECTOR = "div#courseTbl > table#tableCrntAcdm";
+export const ALL_PREV_TABLE_SELECTOR = "div#courseTbl > table#tableCrntAcdm";
+
 export const GRADE_POINTS: Record<string, number> = {
   "A+": 4.0,
   A: 3.75,
@@ -11,5 +18,3 @@ export const GRADE_POINTS: Record<string, number> = {
   D: 2.0,
   F: 0.0,
 } as const;
-
-export const GRADE_TABLE_SELECTOR = "input#tabseven + label + div.tab > table";

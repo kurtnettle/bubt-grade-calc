@@ -1,92 +1,39 @@
-import { GRADE_POINTS, GRADE_TABLE_SELECTOR, LOG_TAG } from "./consts";
+import {
+  LOG_TAG,
+  SEMESTER_WISE_TABLE_SELECTOR,
+  SEMESTER_WISE_PAGE_HEADER_SELECTOR,
+} from "../consts";
+import {
+  addGradeDropdownToTable,
+  addTotalTextRowToTable,
+  cleanBracketText,
+  getSGPAValue,
+  updateCellContent,
+} from "./common";
 
-function cleanBracketText(text: string) {
-  const pattern = /\(.*.\)/gi;
-  return text.replace(pattern, "");
+function getGradeTable() {
+  return document.querySelector(SEMESTER_WISE_TABLE_SELECTOR);
 }
 
-function updateCellContent(
-  cell: Element | null,
-  condition: boolean,
-  oldValue: string | number,
-  newValue: string | number,
-) {
-  if (!cell) return;
-  cell.textContent = condition ? newValue.toString() : oldValue.toString();
-}
-
-function getSGPAValue(text: string) {
-  // SGPA: 3.00
-  // SGPA: 3.00 (2.52)
-
-  const parts = text.split(":");
-  try {
-    return parseFloat(parts[1].match(/\(([^)]+)\)/)?.[1] || parts[1]);
-  } catch (error) {
-    console.error(
-      `[${LOG_TAG}] Failed to extract SGPA from '${text}':`,
-      error.message,
-    );
-  }
-}
-
-export function getGradeTable() {
-  return document.querySelector(GRADE_TABLE_SELECTOR);
-}
-
-export function genGradeDropDown(credit: string, defaultGrade: string) {
-  const select = document.createElement("select");
-  select.setAttribute("data-credit", credit);
-
-  // empty selection for missing grade :/
-  const option = document.createElement("option");
-  option.value = "0.00";
-  option.textContent = "-";
-  option.selected = defaultGrade === "";
-  select.appendChild(option);
-
-  Object.keys(GRADE_POINTS).forEach((grade) => {
-    const option = document.createElement("option");
-    option.value = GRADE_POINTS[grade];
-    option.textContent = grade;
-
-    if (grade === defaultGrade) option.selected = true;
-
-    select.appendChild(option);
-  });
-
-  select.addEventListener("change", (e) => {
-    updateGradeTexts();
-  });
-
-  return select;
-}
-
-function addTableTotalRow(
-  rowIndex: number,
-  totalCredit: number,
-  totalPoints: number,
-  semesterNo: number,
-) {
-  const table = getGradeTable();
+function addTableTotalRows(table: Element) {
   if (!table) return;
 
-  const newRow = table.insertRow(rowIndex);
-  newRow.align = "center";
-  newRow.style.backgroundColor = "#F0F0F0";
-  newRow.setAttribute("data-semester-number", semesterNo);
+  const semesterHeaders = table.querySelectorAll("tr > th[colspan='4']");
+  if (semesterHeaders.length === 0) return;
 
-  const totalTextCell = newRow.insertCell();
-  totalTextCell.colSpan = 2;
-  totalTextCell.align = "right";
-  totalTextCell.style.fontWeight = "bold";
-  totalTextCell.textContent = "Total";
+  let semesterCount = 1;
+  const rows = table.rows;
 
-  const totalCreditCell = newRow.insertCell();
-  totalCreditCell.textContent = totalCredit;
+  semesterHeaders.forEach((header) => {
+    const rowIndex = header.closest("tr")?.rowIndex;
+    if (!rowIndex || rowIndex < 2) return;
+    addTotalTextRowToTable(table, rowIndex, 0, 0, semesterCount, false);
+    semesterCount++;
+  });
 
-  const totalPointsCell = newRow.insertCell();
-  totalPointsCell.textContent = totalPoints;
+  // last semester
+  const lastRowIndex = rows.length;
+  addTotalTextRowToTable(table, lastRowIndex, 0, 0, semesterCount, false);
 }
 
 export function getImprovedGrade(table: Element, courseCode: string) {
@@ -129,28 +76,6 @@ export function getImprovedGrade(table: Element, courseCode: string) {
   return { courseSemester, courseBestGrade };
 }
 
-export function addTableTotalRows() {
-  const table = getGradeTable();
-  if (!table) return;
-
-  const semesterHeaders = table.querySelectorAll("tr > th[colspan='4']");
-  if (semesterHeaders.length === 0) return;
-
-  let semesterCount = 1;
-  const rows = table.rows;
-
-  semesterHeaders.forEach((header) => {
-    const rowIndex = header.closest("tr")?.rowIndex;
-    if (!rowIndex || rowIndex < 2) return;
-    addTableTotalRow(rowIndex, 0, 0, semesterCount);
-    semesterCount++;
-  });
-
-  // last semester
-  const lastRowIndex = rows.length;
-  addTableTotalRow(lastRowIndex, 0, 0, semesterCount);
-}
-
 function updateSemesterTotalCreditAndGradePoints(
   mainTable: Element,
   tableStart: Element,
@@ -191,7 +116,7 @@ function updateSemesterTotalCreditAndGradePoints(
 
       if (isNaN(creditVal) || isNaN(gradeVal)) {
         console.info(
-          `[${LOG_TAG}] Invalid credit (${creditVal}) or grade value (${gradeVal}) found -_-`,
+          `[${LOG_TAG}] - page semester-wise: Invalid credit (${creditVal}) or grade value (${gradeVal}) found -_-`,
         );
       } else if (select.options[select.selectedIndex].text !== "-") {
         const points = creditVal * courseBestGrade;
@@ -241,27 +166,6 @@ function updateSemesterTotalCreditAndGradePoints(
   };
 }
 
-function updateSGPAText(tableStart: Element, newSemesterSGPA: string) {
-  const sGPACell =
-    tableStart?.parentElement?.nextElementSibling?.querySelector("th");
-  if (!sGPACell) return;
-
-  const currentText = sGPACell.textContent?.trim() || "";
-  const currentCleanedText = cleanBracketText(currentText);
-
-  const oldSGPA = currentCleanedText.split(":")[1]?.trim() || "";
-
-  const sGPACellNewText = `${currentCleanedText} (${newSemesterSGPA})`;
-  sGPACell.textContent = sGPACellNewText;
-
-  updateCellContent(
-    sGPACell,
-    newSemesterSGPA !== oldSGPA,
-    currentCleanedText,
-    `${currentCleanedText} (${newSemesterSGPA})`,
-  );
-}
-
 function updateCgpaText() {
   const table = getGradeTable();
   if (!table) return;
@@ -276,7 +180,7 @@ function updateCgpaText() {
 
     if (!gradePointCells || gradePointCells.length !== 2) {
       console.warn(
-        `[${LOG_TAG}]`,
+        `[${LOG_TAG}] - page semester-wise:`,
         `Skipping semester ${currSemesterNo} (invalid structure):`,
         "gradePointCells: ",
         gradePointCells,
@@ -305,7 +209,7 @@ function updateCgpaText() {
       }
     } catch (error) {
       console.error(
-        `[${LOG_TAG}]`,
+        `[${LOG_TAG}] - page semester-wise:`,
         `Failed to update CGPA of Semester ${currSemesterNo}:`,
         error,
       );
@@ -313,6 +217,26 @@ function updateCgpaText() {
       currSemesterNo++;
     }
   });
+}
+
+function updateSGPAText(tableStart: Element, newSemesterSGPA: string) {
+  const sGPACell =
+    tableStart?.parentElement?.nextElementSibling?.querySelector("th");
+  if (!sGPACell) return;
+
+  const oldText = sGPACell.textContent?.trim() || "";
+  const oldCleanedText = cleanBracketText(oldText);
+
+  const oldSGPA = oldCleanedText.split(":")[1]?.trim() || "";
+
+  const newText = `${oldCleanedText} (${newSemesterSGPA})`;
+
+  updateCellContent(
+    sGPACell,
+    newSemesterSGPA !== oldSGPA,
+    oldCleanedText,
+    newText,
+  );
 }
 
 function calcSgpa() {
@@ -327,7 +251,39 @@ function calcSgpa() {
   });
 }
 
-export function updateGradeTexts() {
+function updateGradeTexts() {
   calcSgpa();
   updateCgpaText();
+}
+
+export function checkIfUserOnSemesterWisePage(): boolean {
+  const isHeaderPresent = document
+    .querySelector(SEMESTER_WISE_PAGE_HEADER_SELECTOR)
+    ?.textContent?.includes("Info");
+  const isUrlMatch = document.URL.includes("course_result_info");
+  const isOnSemesterPage = isHeaderPresent || isUrlMatch;
+  console.info(
+    `[${LOG_TAG}] - User ${isOnSemesterPage ? "is" : "is not"} on semester-wise page`,
+  );
+  return isOnSemesterPage;
+}
+
+export function setupSemesterWiseGradeTable() {
+  console.info(
+    `[${LOG_TAG}] - page semester-wise: starting initial processing`,
+  );
+
+  const table = getGradeTable();
+  if (!table) {
+    console.info(`[${LOG_TAG}] - page all-prev: no table found.`);
+    return;
+  }
+  addGradeDropdownToTable(table, false, updateGradeTexts);
+
+  addTableTotalRows(table);
+  updateGradeTexts();
+
+  console.info(
+    `[${LOG_TAG}] - page semester-wise: finished initial processing.`,
+  );
 }
