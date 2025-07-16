@@ -187,10 +187,11 @@ function updateCgpaText() {
     if (currentText.length !== 2) return;
 
     const [SGPAText, CGPAText] = currentText;
-    const oldPointText = `${SGPAText} and ${CGPAText}`;
 
     const oldCgpaCleanedText = cleanBracketText(CGPAText);
     const oldCGPA = oldCgpaCleanedText.split(":")[1]?.trim();
+
+    const oldPointText = `${SGPAText} and ${oldCgpaCleanedText}`;
 
     try {
       const sgpa = getSGPAValue(SGPAText || "");
