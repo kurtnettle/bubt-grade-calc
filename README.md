@@ -10,11 +10,15 @@
   <a href="https://chromewebstore.google.com/detail/bubt-grade-calculator/jjiompimlngmfcleggmeleelnbnildmo/?src=external-github">
     <img src="./assets/docs/get-the-extension-small-no-border.png" alt="Chrome extension store"/>
   </a>
+  <a href="https://greasyfork.org/en/scripts/542912-bubt-annex-grade-calculator">
+    <img src="./assets/docs/greasy-fork-custom.webp" alt="GreasyFork"/>
+  </a>  
 </p>
 
 <p align="center">
     <img src="https://img.shields.io/amo/users/bubt-grade-calculator?label=Firefox%20Users" alt="Badge"/>
     <img src="https://img.shields.io/chrome-web-store/users/jjiompimlngmfcleggmeleelnbnildmo?label=Chrome%20Users" alt="Badge"/>
+    <img alt="Greasy Fork Rating" src="https://img.shields.io/greasyfork/rating-count/542912?label=GreasyFork">
 </p>
 
 ### Real-Time Result Calculator for [BUBT Annex](https://annex.bubt.edu.bd)
@@ -71,6 +75,7 @@ This simple extension allows you to see instant GPA updates as you tweak course 
 Before you begin, ensure you have the followings:
 
 - **Runtime**:
+
   1. [pnpm](https://pnpm.io/installation) (v10.13.1+)
   2. [Node.js](https://nodejs.org/) (v22.14.0 LTS+)
 
