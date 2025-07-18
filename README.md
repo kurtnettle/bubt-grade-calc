@@ -3,6 +3,20 @@
   <h1 align="center">BUBT Grade Calculator</h1>
 </p>
 
+<p align="center">
+  <a href="https://addons.mozilla.org/addon/bubt-grade-calculator/?src=external-github">
+    <img src="./assets/docs/get-the-addon-small.webp" alt="Mozilla AMO"/>
+  </a>
+  <a href="https://chromewebstore.google.com/detail/bubt-grade-calculator/jjiompimlngmfcleggmeleelnbnildmo/?src=external-github">
+    <img src="./assets/docs/get-the-extension-small-no-border.png" alt="Chrome extension store"/>
+  </a>
+</p>
+
+<p align="center">
+    <img src="https://img.shields.io/amo/users/bubt-grade-calculator?label=Firefox%20Users" alt="Badge"/>
+    <img src="https://img.shields.io/chrome-web-store/users/jjiompimlngmfcleggmeleelnbnildmo?label=Chrome%20Users" alt="Badge"/>
+</p>
+
 ### Real-Time Result Calculator for [BUBT Annex](https://annex.bubt.edu.bd)
 
 This simple extension allows you to see instant GPA updates as you tweak course grades!
@@ -44,18 +58,9 @@ This simple extension allows you to see instant GPA updates as you tweak course 
 
 ### Chromium / Forks
 
-1. Head over to [releases](https://github.com/kurtnettle/bubt-grade-calc/releases/latest) and download the `bubt-grade-calc-x.x.signed.crx` file.
-2. On your browser, goto `chrome://extensions`
-3. Enable Developer Mode (toggle in top-right or center-right for Edge)
-4. Drag N Drop the crx file into the extension page.
-5. Confirm installation when prompted.
-6. Enjoy!
-
-> [!TIP]
-> **Why Different Methods?**
->
-> 1. Firefox extensions can be published openly on [AMO](https://addons.mozilla.org) for free 🥳
-> 2. Chrome requires paid developer accounts ($5 one-time fee) 🤑
+1. Visit the [Official Chrome Web Store](https://chromewebstore.google.com/detail/jjiompimlngmfcleggmeleelnbnildmo)
+2. Click "Add to Chrome/Brave"
+3. Done!
 
 ## 💻 Development
 
@@ -96,8 +101,7 @@ Before you begin, ensure you have the followings:
    ```
    This will generate a `.xpi` and `.crx` file inside the `dist/` directory.
 
-> [!IMPORTANT]
-> **Chromium CRX**
+> [!IMPORTANT] > **Chromium CRX**
 >
 > If you want auto-update then don't forget to fill the `update_url` field in the [chrome-manifest.json](./manifest/chrome-manifest.json)
 
